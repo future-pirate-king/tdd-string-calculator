@@ -1,7 +1,18 @@
 package org.example;
 
+import java.util.Arrays;
+
 public class StringCalculator {
+
     public int add(String input) {
-        return 0;
+        if (input.isEmpty()) {
+            return 0;
+        }
+
+        var values = input.split(",");
+        return Arrays
+                .stream(values)
+                .mapToInt(Integer::parseInt)
+                .sum();
     }
 }

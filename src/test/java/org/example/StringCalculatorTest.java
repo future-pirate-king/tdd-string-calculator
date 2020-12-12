@@ -10,4 +10,16 @@ class StringCalculatorTest {
         var calculator = new StringCalculator();
         Assertions.assertEquals(0, calculator.add(""));
     }
+
+    @Test
+    void testAddMethodForOneInput() {
+        var calculator = new StringCalculator();
+        Assertions.assertEquals(1, calculator.add("1"));
+    }
+
+    @Test
+    void testAddMethodForTwoInput() {
+        var calculator = new StringCalculator();
+        Assertions.assertEquals(3, calculator.add("1,2"));
+    }
 }
