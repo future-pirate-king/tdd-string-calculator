@@ -1,14 +1,19 @@
 package org.example;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Supplier;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class StringCalculator {
 
     private static final String DEFAULT_DELIMITER = ",";
+    private static final Pattern N_DELIMITER_PATTERN = Pattern.compile("//\\[(.*?)\\]\n");
     private static final Pattern DELIMITER_PATTERN = Pattern.compile("//(.*?)\n");
+    private static final List<String> META_CHARS = Arrays.asList("*", "+", "$", "^");
 
     private int addCallCount = 0;
 
@@ -22,7 +27,7 @@ public class StringCalculator {
         var delimiter = getDelimiter(input);
         var values = input
                 .replaceFirst(DELIMITER_PATTERN.pattern(), "")
-                .split("[" + delimiter + "\\n]");
+                .split("(" + delimiter + ")|\\n");
 
 
         return checkNegatives(
@@ -48,12 +53,24 @@ public class StringCalculator {
     }
 
     private String getDelimiter(String input) {
+        var nMatcher = N_DELIMITER_PATTERN.matcher(input);
         var matcher = DELIMITER_PATTERN.matcher(input);
-        if (matcher.find()) {
-            return matcher.group(1);
+
+        if (nMatcher.find()) {
+            return getDelimiterForMatcher(nMatcher);
+        } else if (matcher.find()) {
+            return getDelimiterForMatcher(matcher);
         }
 
         return DEFAULT_DELIMITER;
+    }
+
+    private String getDelimiterForMatcher(Matcher matcher) {
+        return matcher.group(1)
+                .codePoints()
+                .mapToObj(c -> String.valueOf((char) c))
+                .map(v -> META_CHARS.contains(v) ? "\\" + v : v)
+                .collect(Collectors.joining(""));
     }
 
     public int getCalledCount() {

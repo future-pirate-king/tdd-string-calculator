@@ -2,6 +2,8 @@ package org.example;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class StringCalculatorTest {
 
@@ -89,5 +91,13 @@ class StringCalculatorTest {
         var calculator = new StringCalculator();
 
         Assertions.assertEquals(6, calculator.add("1\n2000,5"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"%%", "***", "$$", "##", "@@@", "^^^"})
+    void testAddMethodAnyLengthDelimiter(String delimiter) {
+        var calculator = new StringCalculator();
+
+        Assertions.assertEquals(11, calculator.add("//[" + delimiter + "]\n1" + delimiter + "2" + delimiter + "8"));
     }
 }
