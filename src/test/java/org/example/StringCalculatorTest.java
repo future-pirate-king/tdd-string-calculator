@@ -6,7 +6,8 @@ import org.junit.jupiter.api.Test;
 class StringCalculatorTest {
 
     @Test
-    void verifyingSetup() {
-        Assertions.assertTrue(true);
+    void testAddMethodForEmptyString() {
+        var calculator = new StringCalculator();
+        Assertions.assertEquals(0, calculator.add(""));
     }
 }
