@@ -5,24 +5,26 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 class StringCalculatorTest {
 
     @Test
     void testAddMethodForEmptyString() {
         var calculator = new StringCalculator();
-        Assertions.assertEquals(0, calculator.add(""));
+        assertEquals(0, calculator.add(""));
     }
 
     @Test
     void testAddMethodForOneInput() {
         var calculator = new StringCalculator();
-        Assertions.assertEquals(1, calculator.add("1"));
+        assertEquals(1, calculator.add("1"));
     }
 
     @Test
     void testAddMethodForTwoInput() {
         var calculator = new StringCalculator();
-        Assertions.assertEquals(3, calculator.add("1,2"));
+        assertEquals(3, calculator.add("1,2"));
     }
 
     @Test
@@ -30,15 +32,15 @@ class StringCalculatorTest {
         var calculator = new StringCalculator();
 
         Assertions.assertAll(
-                () -> Assertions.assertEquals(17, calculator.add("1,2,6,8")),
-                () -> Assertions.assertEquals(45, calculator.add("1,2,3,4,5,6,7,8,9"))
+                () -> assertEquals(17, calculator.add("1,2,6,8")),
+                () -> assertEquals(45, calculator.add("1,2,3,4,5,6,7,8,9"))
         );
     }
 
     @Test
     void testAddMethodNewLineInInput() {
         var calculator = new StringCalculator();
-        Assertions.assertEquals(8, calculator.add("1\n2,5"));
+        assertEquals(8, calculator.add("1\n2,5"));
     }
 
     @Test
@@ -46,8 +48,8 @@ class StringCalculatorTest {
         var calculator = new StringCalculator();
 
         Assertions.assertAll(
-                () -> Assertions.assertEquals(17, calculator.add("//;\n1;2;6;8")),
-                () -> Assertions.assertEquals(45, calculator.add("//*\n1*2*3*4*5*6*7*8*9"))
+                () -> assertEquals(17, calculator.add("//;\n1;2;6;8")),
+                () -> assertEquals(45, calculator.add("//*\n1*2*3*4*5*6*7*8*9"))
         );
     }
 
@@ -62,7 +64,7 @@ class StringCalculatorTest {
                             () -> calculator.add("-1,2,3")
                     );
 
-                    Assertions.assertEquals("negatives not allowed", exception.getMessage());
+                    assertEquals("negatives not allowed", exception.getMessage());
                 },
                 () -> {
                     var exception = Assertions.assertThrows(
@@ -70,7 +72,7 @@ class StringCalculatorTest {
                             () -> calculator.add("-1,-2,3")
                     );
 
-                    Assertions.assertEquals("negatives not allowed: [-1, -2]", exception.getMessage());
+                    assertEquals("negatives not allowed: [-1, -2]", exception.getMessage());
                 }
         );
     }
@@ -83,14 +85,14 @@ class StringCalculatorTest {
         calculator.add("//;\n1;2;6;8");
         calculator.add("//*\n1*2*3*4*5*6*7*8*9");
 
-        Assertions.assertEquals(3, calculator.getCalledCount());
+        assertEquals(3, calculator.getCalledCount());
     }
 
     @Test
     void testAddMethodIgnorelargeNumbers() {
         var calculator = new StringCalculator();
 
-        Assertions.assertEquals(6, calculator.add("1\n2000,5"));
+        assertEquals(6, calculator.add("1\n2000,5"));
     }
 
     @ParameterizedTest
@@ -98,18 +100,18 @@ class StringCalculatorTest {
     void testAddMethodAnyLengthDelimiter(String delimiter) {
         var calculator = new StringCalculator();
 
-        Assertions.assertEquals(11, calculator.add("//[" + delimiter + "]\n1" + delimiter + "2" + delimiter + "8"));
+        assertEquals(11, calculator.add("//[" + delimiter + "]\n1" + delimiter + "2" + delimiter + "8"));
     }
 
     @Test
     void testAddMethodMultipleDelimiter() {
         var calculator = new StringCalculator();
-        Assertions.assertEquals(11, calculator.add("//[%][*]\n1*2%8"));
+        assertEquals(11, calculator.add("//[%][*]\n1*2%8"));
     }
 
     @Test
     void testAddMethodMultipleAndAnyLengthDelimiter() {
         var calculator = new StringCalculator();
-        Assertions.assertEquals(11, calculator.add("//[%%][***]\n1***2%%8"));
+        assertEquals(11, calculator.add("//[%%][***]\n1***2%%8"));
     }
 }
