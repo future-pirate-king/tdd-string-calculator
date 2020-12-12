@@ -48,4 +48,28 @@ class StringCalculatorTest {
                 () -> Assertions.assertEquals(45, calculator.add("//*\n1*2*3*4*5*6*7*8*9"))
         );
     }
+
+    @Test
+    void testAddMethodWithNegativeNumbers() {
+        var calculator = new StringCalculator();
+
+        Assertions.assertAll(
+                () -> {
+                    var exception = Assertions.assertThrows(
+                            IllegalArgumentException.class,
+                            () -> calculator.add("-1,2,3")
+                    );
+
+                    Assertions.assertEquals("negatives not allowed", exception.getMessage());
+                },
+                () -> {
+                    var exception = Assertions.assertThrows(
+                            IllegalArgumentException.class,
+                            () -> calculator.add("-1,-2,3")
+                    );
+
+                    Assertions.assertEquals("negatives not allowed: [-1, -2]", exception.getMessage());
+                }
+        );
+    }
 }

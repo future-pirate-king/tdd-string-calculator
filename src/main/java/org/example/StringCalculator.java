@@ -1,7 +1,9 @@
 package org.example;
 
 import java.util.Arrays;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
+import java.util.stream.IntStream;
 
 public class StringCalculator {
 
@@ -18,10 +20,25 @@ public class StringCalculator {
                 .replaceFirst(DELIMITER_PATTERN.pattern(), "")
                 .split("[" + delimiter + "\\n]");
 
-        return Arrays
-                .stream(values)
-                .mapToInt(Integer::parseInt)
-                .sum();
+
+        return checkNegatives(
+                () -> Arrays
+                        .stream(values)
+                        .mapToInt(Integer::parseInt)
+                ).sum();
+    }
+
+    private IntStream checkNegatives(Supplier<IntStream> supplier) {
+        var negativeValues = supplier.get().filter(f -> f < 0).toArray();
+
+        if (negativeValues.length > 0) {
+            final String message = "negatives not allowed";
+            throw new IllegalArgumentException(
+                    negativeValues.length > 1 ? message + ": " + Arrays.toString(negativeValues) : message
+            );
+        }
+
+        return supplier.get();
     }
 
     private String getDelimiter(String input) {
