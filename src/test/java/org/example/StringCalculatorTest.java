@@ -32,4 +32,10 @@ class StringCalculatorTest {
                 () -> Assertions.assertEquals(45, calculator.add("1,2,3,4,5,6,7,8,9"))
         );
     }
+
+    @Test
+    void testAddMethodNewLineInInput() {
+        var calculator = new StringCalculator();
+        Assertions.assertEquals(8, calculator.add("1\n2,5"));
+    }
 }
