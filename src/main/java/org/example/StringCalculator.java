@@ -9,7 +9,7 @@ public class StringCalculator {
             return 0;
         }
 
-        var values = input.split(",");
+        var values = input.split("[,\\n]");
         return Arrays
                 .stream(values)
                 .mapToInt(Integer::parseInt)
