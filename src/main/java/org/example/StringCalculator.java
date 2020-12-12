@@ -29,7 +29,9 @@ public class StringCalculator {
                 () -> Arrays
                         .stream(values)
                         .mapToInt(Integer::parseInt)
-                ).sum();
+                )
+                .filter(f -> f <= 1000)
+                .sum();
     }
 
     private IntStream checkNegatives(Supplier<IntStream> supplier) {

@@ -83,4 +83,11 @@ class StringCalculatorTest {
 
         Assertions.assertEquals(3, calculator.getCalledCount());
     }
+
+    @Test
+    void testAddMethodIgnorelargeNumbers() {
+        var calculator = new StringCalculator();
+
+        Assertions.assertEquals(6, calculator.add("1\n2000,5"));
+    }
 }
