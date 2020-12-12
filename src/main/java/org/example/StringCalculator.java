@@ -27,7 +27,7 @@ public class StringCalculator {
         var delimiter = getDelimiter(input);
         var values = input
                 .replaceFirst(DELIMITER_PATTERN.pattern(), "")
-                .split("(" + delimiter + ")|\\n");
+                .split(delimiter + "|\\n");
 
 
         return checkNegatives(
@@ -62,15 +62,20 @@ public class StringCalculator {
             return getDelimiterForMatcher(matcher);
         }
 
-        return DEFAULT_DELIMITER;
+        return "(" + DEFAULT_DELIMITER + ")";
     }
 
     private String getDelimiterForMatcher(Matcher matcher) {
-        return matcher.group(1)
-                .codePoints()
-                .mapToObj(c -> String.valueOf((char) c))
-                .map(v -> META_CHARS.contains(v) ? "\\" + v : v)
-                .collect(Collectors.joining(""));
+        var delimiters = matcher.group(1).split("\\]\\[");
+
+        return Arrays
+                .stream(delimiters)
+                .map(delimiter -> delimiter.codePoints()
+                        .mapToObj(c -> String.valueOf((char) c))
+                        .map(v -> META_CHARS.contains(v) ? "\\" + v : v)
+                        .collect(Collectors.joining("")))
+                .map(delimiter -> "(" + delimiter + ")")
+                .collect(Collectors.joining("|"));
     }
 
     public int getCalledCount() {

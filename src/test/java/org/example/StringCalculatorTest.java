@@ -100,4 +100,16 @@ class StringCalculatorTest {
 
         Assertions.assertEquals(11, calculator.add("//[" + delimiter + "]\n1" + delimiter + "2" + delimiter + "8"));
     }
+
+    @Test
+    void testAddMethodMultipleDelimiter() {
+        var calculator = new StringCalculator();
+        Assertions.assertEquals(11, calculator.add("//[%][*]\n1*2%8"));
+    }
+
+    @Test
+    void testAddMethodMultipleAndAnyLengthDelimiter() {
+        var calculator = new StringCalculator();
+        Assertions.assertEquals(11, calculator.add("//[%%][***]\n1***2%%8"));
+    }
 }
