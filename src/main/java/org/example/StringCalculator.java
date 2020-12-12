@@ -10,7 +10,11 @@ public class StringCalculator {
     private static final String DEFAULT_DELIMITER = ",";
     private static final Pattern DELIMITER_PATTERN = Pattern.compile("//(.*?)\n");
 
+    private int addCallCount = 0;
+
     public int add(String input) {
+        addCallCount++;
+
         if (input.isEmpty()) {
             return 0;
         }
@@ -48,5 +52,9 @@ public class StringCalculator {
         }
 
         return DEFAULT_DELIMITER;
+    }
+
+    public int getCalledCount() {
+        return addCallCount;
     }
 }

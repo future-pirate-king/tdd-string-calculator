@@ -72,4 +72,15 @@ class StringCalculatorTest {
                 }
         );
     }
+
+    @Test
+    void testAddMethodInvokedCount() {
+        var calculator = new StringCalculator();
+
+        calculator.add("1\n2,5");
+        calculator.add("//;\n1;2;6;8");
+        calculator.add("//*\n1*2*3*4*5*6*7*8*9");
+
+        Assertions.assertEquals(3, calculator.getCalledCount());
+    }
 }
